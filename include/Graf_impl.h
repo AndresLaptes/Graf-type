@@ -34,7 +34,7 @@ void Graf<T>::insert_biconection(Node *a, Node *b){
         if (b == a->conections[i]) found = true;
     }
     
-    if (found) throw invalid_argument("Error: already exits your conection between this nodes"); 
+    if (found) throw invalid_argument("Error: already exits your conection between this vertexs"); 
     a->conections.push_back(b);
 
     end = b->conections.size();
@@ -42,7 +42,7 @@ void Graf<T>::insert_biconection(Node *a, Node *b){
         if (a == b->conections[i]) found = true;
     }
 
-    if (found) throw invalid_argument("Error: already exits your conection between this nodes"); 
+    if (found) throw invalid_argument("Error: already exits your conection between this vertexs"); 
     b->conections.push_back(a);
 }
 
@@ -81,7 +81,7 @@ void Graf<T>::insert(const T& value, int argc, T nodes[]) {
                 string msg = "Error: Your node ";
                 msg += to_string(nodes[i]);
                 msg += " is not exist";
-                throw invalid_argument("Error: argc is an invalid number");
+                throw invalid_argument(msg);
             } else {
                 aux->conections.push_back(nuevo);
                 nuevo->conections.push_back(aux);
@@ -89,6 +89,19 @@ void Graf<T>::insert(const T& value, int argc, T nodes[]) {
         }
     }
     this->vertexs.push_back(nuevo);
+}
+
+template <typename T>
+void Graf<T>::conect(const T& a, const T& b) {
+    Node *A = this->value(a);
+    Node *B = this->value(b);
+    if (A == nullptr) {
+        string msg = "Error: your vertex ";
+        msg += to_string(a);
+        msg += " not exits in the graf";
+        throw invalid_argument(msg);
+    }
+
 }
 
 #endif
