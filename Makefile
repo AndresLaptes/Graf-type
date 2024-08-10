@@ -14,4 +14,4 @@ main.o: rsc/main.cpp
 	$(COP) $(FLAGS) -c rsc/main.cpp
 
 clean: 
-	rm -f $(OBJ) $(NAME) *.h.gch *.o
+	rm -f $(OBJ) $(NAME) *.h.gch *.o res.txt

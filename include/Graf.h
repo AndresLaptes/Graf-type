@@ -17,7 +17,8 @@ template <typename T> class Graf {
 
         void insert_biconection(Node *a, Node *b);
     public:
-        Graf(const T&);
+        Graf(const T& val);
+        Graf();
         ~Graf();
         int size() const;
         void insert(const T& value, int argc = -1 ,T direcciones[] = {});
@@ -25,6 +26,9 @@ template <typename T> class Graf {
         Node *value(const T& var) const;
         //si existe retorna true, sino false
         bool exist(const T&var) const;
+
+        //mira si dos vertices estan connectado
+        bool connected(const T& a, const T& b) const;
 
         //conecta dos nodos si no se puede exepcion
         void conect(const T& a, const T& b);

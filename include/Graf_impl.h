@@ -9,6 +9,11 @@
 using namespace std;
 
 template <typename T>
+Graf<T>::Graf() {
+
+}
+
+template <typename T>
 Graf<T>::Graf(const T& value) {
     Node *nuevo = new Node;
     nuevo->vertex = value;
@@ -65,13 +70,20 @@ void Graf<T>::visualizar() {
     for (auto& nodo : vertexs) {
         cout << "En la direccion (" << nodo << ") hay un nodo con valor: " << nodo->vertex << " con las siguientes conexiones : ";
         int end = nodo->conections.size();
-        for (int i = 0; i < end; ++i) cout << nodo->conections[i] << " ";
+        for (int i = 0; i < end; ++i) cout << nodo->conections[i]->vertex << " ";
         cout << endl; 
     }
 }
 
 template <typename T>
 void Graf<T>::insert(const T& value, int argc, T nodes[]) {
+    if (this->exist(value)) {
+        string msg = "Error: Your node ";
+        msg += to_string(value);
+        msg += " already exist in graf";
+        throw invalid_argument(msg);
+    }
+    
     typename Graf<T>::Node *nuevo = new typename Graf<T>::Node;
     nuevo->vertex = value;
     if (0 <= argc) {
@@ -92,6 +104,52 @@ void Graf<T>::insert(const T& value, int argc, T nodes[]) {
 }
 
 template <typename T>
+bool Graf<T>::connected(const T& a, const T&b) const {
+    bool found = false;
+    if (a == b) {
+        string msg = "Error: your are trying to connect ";
+        msg += to_string(a);
+        msg += ", ";
+        msg += to_string(b);
+        throw invalid_argument(msg);
+    }
+
+    Node *A = this->value(a);
+    Node *B = this->value(b);
+    if (A == nullptr) {
+        string msg = "Error: your vertex ";
+        msg += to_string(a);
+        msg += " not exits in the graf";
+        throw invalid_argument(msg);
+    }
+
+    if (B == nullptr) {
+        string msg = "Error: your vertex ";
+        msg += to_string(a);
+        msg += " not exits in the graf";
+        throw invalid_argument(msg);
+    }
+
+    for (auto& it : A->conections) {
+        if (it == B) {
+            found = true;
+            break;
+        }
+    }
+
+    if (found) return true;
+
+    for (auto& it : B->conections) {
+        if (it == A) {
+            found = true;
+            break;
+        }
+    }
+
+    return found;
+} 
+
+template <typename T>
 void Graf<T>::conect(const T& a, const T& b) {
     Node *A = this->value(a);
     Node *B = this->value(b);
@@ -102,6 +160,25 @@ void Graf<T>::conect(const T& a, const T& b) {
         throw invalid_argument(msg);
     }
 
+    if (B == nullptr) {
+        string msg = "Error: your vertex ";
+        msg += to_string(a);
+        msg += " not exits in the graf";
+        throw invalid_argument(msg);
+    }
+
+    if (not this->connected(a, b)) {
+        A->conections.push_back(B);
+        B->conections.push_back(A);
+    } else {
+        string msg = "Error: your connection between ";
+        msg += to_string(a);
+        msg += ", ";
+        msg += to_string(b);
+        msg += " already exists";
+        throw invalid_argument(msg);
+    }
+    
 }
 
 #endif
