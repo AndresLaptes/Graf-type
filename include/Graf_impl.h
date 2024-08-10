@@ -78,8 +78,7 @@ void Graf<T>::visualizar() {
 template <typename T>
 void Graf<T>::insert(const T& value, int argc, T nodes[]) {
     if (this->exist(value)) {
-        string msg = "Error: Your node ";
-        msg += to_string(value);
+        string msg = "Error: Your node that are you trying to";
         msg += " already exist in graf";
         throw invalid_argument(msg);
     }
@@ -90,9 +89,9 @@ void Graf<T>::insert(const T& value, int argc, T nodes[]) {
         for (int i = 0; i < argc; ++i) {
             Node *aux = this->value(nodes[i]);
             if (aux == nullptr) {
-                string msg = "Error: Your node ";
-                msg += to_string(nodes[i]);
-                msg += " is not exist";
+                string msg = "Error: Your node that is in the position ";
+                msg += to_string(i);
+                msg += " not exist";
                 throw invalid_argument(msg);
             } else {
                 aux->conections.push_back(nuevo);
@@ -107,25 +106,19 @@ template <typename T>
 bool Graf<T>::connected(const T& a, const T&b) const {
     bool found = false;
     if (a == b) {
-        string msg = "Error: your are trying to connect ";
-        msg += to_string(a);
-        msg += ", ";
-        msg += to_string(b);
+        string msg = "Error: your are trying to connect the same value";
         throw invalid_argument(msg);
     }
 
     Node *A = this->value(a);
     Node *B = this->value(b);
     if (A == nullptr) {
-        string msg = "Error: your vertex ";
-        msg += to_string(a);
-        msg += " not exits in the graf";
+        string msg = "Error: your first vertex not exits in the graf";
         throw invalid_argument(msg);
     }
 
     if (B == nullptr) {
-        string msg = "Error: your vertex ";
-        msg += to_string(a);
+        string msg = "Error: your vertex second";
         msg += " not exits in the graf";
         throw invalid_argument(msg);
     }
@@ -154,15 +147,13 @@ void Graf<T>::conect(const T& a, const T& b) {
     Node *A = this->value(a);
     Node *B = this->value(b);
     if (A == nullptr) {
-        string msg = "Error: your vertex ";
-        msg += to_string(a);
+        string msg = "Error: your fisrt vertex ";
         msg += " not exits in the graf";
         throw invalid_argument(msg);
     }
 
     if (B == nullptr) {
-        string msg = "Error: your vertex ";
-        msg += to_string(a);
+        string msg = "Error: your second vertex ";
         msg += " not exits in the graf";
         throw invalid_argument(msg);
     }
@@ -171,14 +162,26 @@ void Graf<T>::conect(const T& a, const T& b) {
         A->conections.push_back(B);
         B->conections.push_back(A);
     } else {
-        string msg = "Error: your connection between ";
-        msg += to_string(a);
-        msg += ", ";
-        msg += to_string(b);
+        string msg = "Error: your connection between your values";
         msg += " already exists";
         throw invalid_argument(msg);
     }
     
+}
+
+template <typename T>
+T** Graf<T>::conections(const T& var) const {
+    Node *aux = value(var);
+    if (aux == nullptr) return nullptr;
+
+    T ** dev;
+    int size = aux->conections.size();
+    for (int i = 0; i < size; ++i) {
+        dev[i] = &(aux->conections[i]->vertex);
+    }
+    dev[size] = nullptr;
+    
+    return dev;
 }
 
 #endif
