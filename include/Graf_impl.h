@@ -1,4 +1,3 @@
-
 #ifndef GRAF_IMPL_H
 #define GRAF_IMPL_H
 #include "Graf.h"
@@ -182,6 +181,42 @@ T** Graf<T>::conections(const T& var) const {
     dev[size] = nullptr;
     
     return dev;
+}
+
+template <typename T>
+void Graf<T>::clean() {
+    for (auto node : vertexs) delete node;
+    vertexs.clear();
+}
+
+template <typename T>
+void Graf<T>::remove(const T& val) {
+    Node *dir = this->value(val);
+    if (dir != nullptr) {
+        for (auto aux : dir->conections) {
+            for (auto it = aux->conections.begin(); it != aux->conections.end(); ++it) {
+                if (*it == dir) {
+                    aux->conections.erase(it);
+                    break;
+                }
+            }
+        }
+
+        for (auto aux = this->vertexs.begin(); aux != this->vertexs.end(); ++aux) {
+            if (*aux == dir) {
+                vertexs.erase(aux);
+                break;
+            }
+        }
+    } else {
+        string msg = "Error: your are trying to remove a value that not exits";
+        throw invalid_argument(msg);
+    }
+}
+
+template <typename T>
+void Graf<T>::read(FILE *file) {
+    
 }
 
 #endif

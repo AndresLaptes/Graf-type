@@ -6,7 +6,7 @@
 using namespace std;
 
 
-//si el tipo es un struc tienes que definir sus operadores ==, <= etc...
+//si el tipo es un struct tienes que definir sus operadores ==, <= etc...
 template <typename T> class Graf {
     private:
         struct Node{
@@ -23,7 +23,14 @@ template <typename T> class Graf {
         Graf();
         ~Graf();
         int size() const;
-        void insert(const T& value, int argc = -1 ,T direcciones[] = {});
+        //valor a añadir, numero de conexxiones hemos pasado, las conexiones...
+        void insert(const T& value, int argc = -1 ,T conexiones[] = {});
+
+        //Elimina el vertice y todas sus conexiones
+        void remove(const T& value);
+
+        //limpia todo el grafo
+        void clean();
 
         //si existe retorna true, sino false
         bool exist(const T&var) const;
@@ -38,6 +45,9 @@ template <typename T> class Graf {
 
         //devuelve la direccion de las conexiones de lo que se le pasa por parametro, si no existe nullptr y si exite el utlimo elemento siempre sera nullptr
         T** conections(const T& var) const;
+
+        //lee un archivo csv 
+        void read(FILE *file);
 
 };
 
