@@ -33,17 +33,23 @@ Graf<T>::~Graf() {
 template <typename T> 
 void Graf<T>::insert_biconection(Node *a, Node *b){
     bool found = false;
-    int end = a->conections.size();
-    for (int i = 0; i < end; ++i) {
-        if (b == a->conections[i]) found = true;
-    }
+    auto end = a->conections.end();
+    for (auto it = a->conections.begin(); it != end; ++it) {
+        if (*it == b) {
+            found = true;
+            break;
+        }
+    } 
     
     if (found) throw invalid_argument("Error: already exits your conection between this vertexs"); 
     a->conections.push_back(b);
 
-    end = b->conections.size();
-    for (int i = 0; i < end; ++i) {
-        if (a == b->conections[i]) found = true;
+    end = b->conections.end();
+    for (auto it = b->conections.begin(); it != end; ++it) {
+        if (a == *it)  {
+            found = true;
+            break;
+        }
     }
 
     if (found) throw invalid_argument("Error: already exits your conection between this vertexs"); 
@@ -68,8 +74,8 @@ template <typename T>
 void Graf<T>::visualizar() {
     for (auto& nodo : vertexs) {
         cout << "En la direccion (" << nodo << ") hay un nodo con valor: " << nodo->vertex << " con las siguientes conexiones : ";
-        int end = nodo->conections.size();
-        for (int i = 0; i < end; ++i) cout << nodo->conections[i]->vertex << " ";
+        auto end = nodo->conections.end();
+        for (auto it = nodo->conections.begin(); it != end; ++it) cout << (*it)->vertex << " ";
         cout << endl; 
     }
 }
@@ -105,20 +111,20 @@ template <typename T>
 bool Graf<T>::connected(const T& a, const T&b) const {
     bool found = false;
     if (a == b) {
-        string msg = "Error: your are trying to connect the same value";
+        string msg = "Error: are same vertex";
         throw invalid_argument(msg);
     }
 
     Node *A = this->value(a);
     Node *B = this->value(b);
     if (A == nullptr) {
-        string msg = "Error: your first vertex not exits in the graf";
+        string msg = "Error: your first vertex not exist in the graf";
         throw invalid_argument(msg);
     }
 
     if (B == nullptr) {
-        string msg = "Error: your vertex second";
-        msg += " not exits in the graf";
+        string msg = "Error: your second vertex";
+        msg += " not exist in the graf";
         throw invalid_argument(msg);
     }
 
@@ -173,10 +179,13 @@ T** Graf<T>::conections(const T& var) const {
     Node *aux = value(var);
     if (aux == nullptr) return nullptr;
 
-    T ** dev;
+    int i = 0;
     int size = aux->conections.size();
-    for (int i = 0; i < size; ++i) {
-        dev[i] = &(aux->conections[i]->vertex);
+    T ** dev = new T*[size + 1];
+    auto end = aux->conections.end();
+    for (auto it = aux->conections.begin(); it != end; ++it) {
+        dev[i] = &((*it)->vertex);
+        ++i;
     }
     dev[size] = nullptr;
     
@@ -212,11 +221,6 @@ void Graf<T>::remove(const T& val) {
         string msg = "Error: your are trying to remove a value that not exits";
         throw invalid_argument(msg);
     }
-}
-
-template <typename T>
-void Graf<T>::read(FILE *file) {
-    
 }
 
 #endif

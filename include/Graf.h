@@ -1,8 +1,7 @@
 #ifndef GRAF_H
 #define GRAF_H
 #include <iostream>
-#include <vector>
-#include <cmath>
+#include <list>
 using namespace std;
 
 
@@ -11,9 +10,9 @@ template <typename T> class Graf {
     private:
         struct Node{
             T vertex;
-            vector<Node*> conections;
+            list<Node*> conections;
         };
-        vector<Node*> vertexs;
+        list<Node*> vertexs;
         
         //si se encuentra devuelve &var, sino exitse devuelve nullptr
         Node *value(const T& var) const;
@@ -41,13 +40,16 @@ template <typename T> class Graf {
         //conecta dos nodos si no se puede exepcion
         void conect(const T& a, const T& b);
         
+
+        /*friend std::ostream& operator<<(std::ostream& os, const Persona& other) {
+        os << "(Edad: " << other.edad;
+        os << " y Dni: " << other.dni << ")";
+        return os;
+        } Esto para structs cout*/ 
         void visualizar(); //Esta la eliminaremos pronto o la pondremos en el privado;
 
         //devuelve la direccion de las conexiones de lo que se le pasa por parametro, si no existe nullptr y si exite el utlimo elemento siempre sera nullptr
         T** conections(const T& var) const;
-
-        //lee un archivo csv 
-        void read(FILE *file);
 
 };
 
