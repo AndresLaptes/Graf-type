@@ -39,6 +39,8 @@ template <typename T> class Graf {
 
         //conecta dos nodos si no se puede exepcion
         void conect(const T& a, const T& b);
+
+        void conect(const T&a, const T& values);
         
 
         /*friend std::ostream& operator<<(std::ostream& os, const Persona& other) {
@@ -50,6 +52,9 @@ template <typename T> class Graf {
 
         //devuelve la direccion de las conexiones de lo que se le pasa por parametro, si no existe nullptr y si exite el utlimo elemento siempre sera nullptr
         T** conections(const T& var) const;
+        
+        //devuelve la direcciones en orden del camino mas corto del grafo, laultima pos es nullptr
+        T** BFS(const T& origin, const T& end);
 
 };
 

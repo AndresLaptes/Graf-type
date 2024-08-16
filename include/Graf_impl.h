@@ -2,7 +2,9 @@
 #define GRAF_IMPL_H
 #include "Graf.h"
 #include <stdio.h>
-#include <vector>
+#include <queue>
+#include <unordered_set>
+#include <unordered_map>
 #include <iostream>
 #include <stdexcept>
 using namespace std;
@@ -221,6 +223,66 @@ void Graf<T>::remove(const T& val) {
         string msg = "Error: your are trying to remove a value that not exits";
         throw invalid_argument(msg);
     }
+}
+
+template <typename T>
+void Graf<T>::conect(const T& a, const T& conections[]) {
+
+}
+
+template <typename T>
+T** Graf<T>::BFS(const T& begin, const T& end) {
+    Node *first = value(begin);
+
+    if (first == nullptr) {
+        string msg = "Error: your firts argument not exits";
+        throw invalid_argument(msg);
+    }
+
+    queue<Node*> cola;
+    unordered_map<Node*,Node*> predecessor;
+    unordered_set<Node*> visitados;
+
+    cola.push(first);
+    visitados.emplace(first);
+    predecessor.emplace({first,nullptr});
+
+    while (not cola.empty()) {
+        Node* act = cola.front();
+        cola.pop();
+
+        auto ended = act->conections.end();
+        for(auto it = act->conections.begin(); it != ended; ++it) {
+            auto found = visitados.find(*it);
+            if (found == visitados.end()) { //no visitado
+                visitados.emplace(*it);
+                predecessor.emplace({*it, act});
+                cola.push(*it);
+                if (*it->vertex == end) { //hemos llegado a destino hay que retornar
+                    list<Node*> aux;
+                    Node *step = *it;
+                    while (step != first) {
+                        aux.push_back(step);
+                        step = predecessor[step];
+                    }
+                    aux.push_back(first);
+                    aux.reverse();
+                    T **regresar = new T*[aux.size() + 1];
+                    auto end2 = aux.end();
+                    int i = 0;
+                    for (auto it2 = aux.begin(); it2 != end2; ++it2) {
+                        regresar[i] = *it2;
+                        ++i; 
+                    }
+                    ++i;
+                    regresar[i] = nullptr;
+                    return regresar;
+                }
+            }
+        }
+    }
+
+
 }
 
 #endif
