@@ -40,7 +40,7 @@ template <typename T> class Graf {
         //conecta dos nodos si no se puede exepcion
         void conect(const T& a, const T& b);
 
-        void conect(const T&a, const T& values);
+        void conect(const T&a, const T values[]);
         
 
         /*friend std::ostream& operator<<(std::ostream& os, const Persona& other) {

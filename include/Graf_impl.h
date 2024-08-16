@@ -226,8 +226,8 @@ void Graf<T>::remove(const T& val) {
 }
 
 template <typename T>
-void Graf<T>::conect(const T& a, const T& conections[]) {
-
+void Graf<T>::conect(const T& a, const T conections[]) {
+    
 }
 
 template <typename T>
